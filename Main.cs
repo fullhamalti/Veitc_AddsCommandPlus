@@ -21,8 +21,8 @@ namespace Veitc.AddsCommandPlus
             IsMLoaded = true;
             try
             {
-				Comman.FuncTask.InitClass();
-        		VCommands.InitClass();
+		Comman.FuncTask.InitClass();
+        	VCommands.InitClass();
                 World.OnWorldLoadFinishedEventHandler += OnWorldLoadFinished;
                 World.OnWorldQuitEventHandler += OnWorldQuit;
                 World.OnStartupAppEventHandler += World_OnStartupAppEventHandler;
@@ -69,7 +69,6 @@ namespace Veitc.AddsCommandPlus
 
         //public static int internal_run_veitc_command(object[] parms)
         //{
-        //	
         //    Comman.FuncTask.CreateTask(delegate
         //    {
         //        VCommands._RunCommands(parms);

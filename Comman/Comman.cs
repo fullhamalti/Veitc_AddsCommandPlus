@@ -336,7 +336,8 @@ namespace Veitc.AddsCommandPlus
             catch (Exception)
             { }
         }
-        public static void  Lot_RepairAllForLot(Lot lot)
+        public static 
+            void Lot_RepairAllForLot(Lot lot)
         {
             if (lot == null)
             {
@@ -382,7 +383,8 @@ namespace Veitc.AddsCommandPlus
                 }
             }
         }
-        public static void  Lot_CleanUpAllForLot(Lot lot, bool bNeedCleanBill)
+        public static 
+            void Lot_CleanUpAllForLot(Lot lot, bool bNeedCleanBill)
         {
             if (lot == null)
             {
@@ -597,7 +599,8 @@ namespace Veitc.AddsCommandPlus
             }
             return vector;
         }
-        public static void Lot_AllDestroyObjects(Lot targetLot)
+        public static 
+            void Lot_AllDestroyObjects(Lot targetLot)
         {
             var worldpos = Sims3.Gameplay.Services.Service.GetPositionInRandomLot(LotManager.GetWorldLot());
             if (!Vector3_IsUnSafe(worldpos))

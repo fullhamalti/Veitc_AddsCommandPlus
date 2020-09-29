@@ -1,4 +1,4 @@
-﻿// Copyright © 2020 Fullham Alfayet
+// Copyright © 2020 Fullham Alfayet
 // Licensed under terms of the GPL Version 3. See LICENSE.txt
 
 using System;
@@ -320,20 +320,20 @@ namespace Veitc.AddsCommandPlus
                 //ScriptCore.DownloadContent.DownloadContent_SaveTravelSim(null, null, null, default(ResourceKey), ref o);
 
 
-                ScriptCore.GameUtils.GameUtils_SetGameTimeScaleImpl(100);
-                Comman.Debugger_Break();
-                ScriptCore.GameUtils.GameUtils_PauseImpl();
-                Comman.Debugger_Break();
-                ScriptCore.GameUtils.GameUtils_SetGameTimeSpeedLevel(3);
-                Comman.Debugger_Break();
-                ScriptCore.GameUtils.GameUtils_UnpauseImpl();
-                Comman.Debugger_Break();
-                ScriptCore.GameUtils.GameUtils_GetGameTimeSpeedLevel();
-                Comman.Debugger_Break();
-                ScriptCore.GameUtils.GameUtils_GetGameTimeScaleImpl();
-                Comman.Debugger_Break();
-                ScriptCore.GameUtils.GameUtils_FreezeLotLODs(true);
-                Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_SetGameTimeScaleImpl(100);
+                //Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_PauseImpl();
+                //Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_SetGameTimeSpeedLevel(3);
+                //Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_UnpauseImpl();
+                //Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_GetGameTimeSpeedLevel();
+                //Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_GetGameTimeScaleImpl();
+                //Comman.Debugger_Break();
+                //ScriptCore.GameUtils.GameUtils_FreezeLotLODs(true);
+                //Comman.Debugger_Break();
                 ScriptCore.GameUtils.GameUtils_GetCurrentMemoryUsage();
                 Comman.Debugger_Break();
                 ScriptCore.GameUtils.GameUtils_GetFrameNumber();

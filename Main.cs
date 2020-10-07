@@ -1,4 +1,4 @@
-﻿// Copyright © 2020 Fullham Alfayet
+// Copyright © 2020 Fullham Alfayet
 // Licensed under terms of the GPL Version 3. See LICENSE.txt
 
 using System;
@@ -21,8 +21,8 @@ namespace Veitc.AddsCommandPlus
             IsMLoaded = true;
             try
             {
-		Comman.FuncTask.InitClass();
-        	VCommands.InitClass();
+                Comman.FuncTask.InitClass();
+                VCommands.InitClass();
                 World.OnWorldLoadFinishedEventHandler += OnWorldLoadFinished;
                 World.OnWorldQuitEventHandler += OnWorldQuit;
                 World.OnStartupAppEventHandler += World_OnStartupAppEventHandler;
@@ -38,7 +38,7 @@ namespace Veitc.AddsCommandPlus
 
         static _Main() { OnLoadingMod(); _main(); }
 
-        public static string GetTextVersion()
+        public static string vGetTextVersion()
         {
             return _thisAssembly._version;
         }
@@ -67,23 +67,12 @@ namespace Veitc.AddsCommandPlus
             Comman.OnWorldLoadFinished();
         }
 
-        //public static int internal_run_veitc_command(object[] parms)
-        //{
-        //    Comman.FuncTask.CreateTask(delegate
-        //    {
-        //        VCommands._RunCommands(parms);
-        //    });
-        //    return 0;
-        //}
-
         private static void World_OnStartupAppEventHandler(object sender, EventArgs e)
         {
-        	
             if (CommandSystem.Exists())
             {
-                //CommandSystem.RegisterCommand("veitc", "Using veitc [...]", internal_run_veitc_command, false);
                 CommandHandler d = delegate(object[] parameters) {
-                    object o = null; // GC Bug! Game Crash Fixed
+                    object o = null;
                     Comman.FuncTask.CreateTask(delegate
                     {
                         if (o == null)
@@ -93,7 +82,8 @@ namespace Veitc.AddsCommandPlus
                 };
                 CommandSystem.RegisterCommand("veitc", "Using veitc [...]", d, false);
             }
-            else Comman.PrintMessage("Command System don't have Exists!!\nCan't Run Register Command", false, float.MaxValue);
+            else
+                Comman.PrintMessage("Command System don't have Exists!!\nCan't Run Register Command", false, float.MaxValue);
         }
     }
 }

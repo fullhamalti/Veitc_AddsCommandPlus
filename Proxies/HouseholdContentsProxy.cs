@@ -1,4 +1,4 @@
-﻿// Copyright © 2020 Fullham Alfayet
+// Copyright © 2020 Fullham Alfayet
 // Licensed under terms of the GPL Version 3. See LICENSE.txt
 
 using Sims3.Gameplay;
@@ -110,11 +110,19 @@ namespace Veitc.AddsCommandPlus.Proxies
                     if (allSimDescription.mTraitManager == null)
                     {
                         allSimDescription.mTraitManager = new TraitManager();
+                        allSimDescription.mTraitManager.mSimDescription = allSimDescription;
                         needFix = true;
                     }
                     if (allSimDescription.SkillManager == null)
                     {
                         allSimDescription.SkillManager = new Sims3.Gameplay.Skills.SkillManager(allSimDescription);
+                        allSimDescription.SkillManager.mSimDescription = allSimDescription;
+                        needFix = true;
+                    }
+                    if (allSimDescription.mGenealogy == null)
+                    {
+                        allSimDescription.mGenealogy = new Genealogy(allSimDescription);
+                        allSimDescription.mGenealogy.mSim = allSimDescription;
                         needFix = true;
                     }
                     if (needFix)

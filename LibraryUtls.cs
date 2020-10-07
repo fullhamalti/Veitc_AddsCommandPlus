@@ -1,4 +1,4 @@
-﻿// Copyright © 2020 Fullham Alfayet
+// Copyright © 2020 Fullham Alfayet
 // Licensed under terms of the GPL Version 3. See LICENSE.txt
 
 using Sims3.Gameplay;
@@ -789,7 +789,10 @@ namespace Veitc.AddsCommandPlus
         {
             if (packageFile == null) 
                 return null;
-            ExportBin.RefreshExportBin();
+
+            //ExportBin.RefreshExportBin();
+            ScriptCore.DownloadContent.DownloadContent_RefreshExportBin();
+
             ExportBinContents package = BinCommon.GetPackage(ExportBin.GetPackageInfo(packageFile) ?? "");
             if (package != null)
             {

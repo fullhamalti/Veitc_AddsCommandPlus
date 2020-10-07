@@ -1,4 +1,4 @@
-﻿// Copyright © 2020 Fullham Alfayet
+// Copyright © 2020 Fullham Alfayet
 // Licensed under terms of the GPL Version 3. See LICENSE.txt
 
 #region Using Directives
@@ -161,7 +161,11 @@ namespace Veitc.AddsCommandPlus
 #pragma warning restore 1058
                 finally
                 {
-                    ScriptCore.Simulator.Simulator_DestroyObjectImpl(base.ObjectId.Value);
+#if TEST_FASTCALL_NATIVE
+                    ScriptCore.Simulator.Simulator_DestroyObjectImpl(base.ObjectId.Value); 
+#else
+                    Simulator.DestroyObject(base.ObjectId);
+#endif
                 }
             }
 
@@ -336,8 +340,7 @@ namespace Veitc.AddsCommandPlus
             catch (Exception)
             { }
         }
-        public static 
-            void Lot_RepairAllForLot(Lot lot)
+        public static void  Lot_RepairAllForLot(Lot lot)
         {
             if (lot == null)
             {
@@ -383,8 +386,7 @@ namespace Veitc.AddsCommandPlus
                 }
             }
         }
-        public static 
-            void Lot_CleanUpAllForLot(Lot lot, bool bNeedCleanBill)
+        public static void  Lot_CleanUpAllForLot(Lot lot, bool bNeedCleanBill)
         {
             if (lot == null)
             {
@@ -599,8 +601,7 @@ namespace Veitc.AddsCommandPlus
             }
             return vector;
         }
-        public static 
-            void Lot_AllDestroyObjects(Lot targetLot)
+        public static void Lot_AllDestroyObjects(Lot targetLot)
         {
             var worldpos = Sims3.Gameplay.Services.Service.GetPositionInRandomLot(LotManager.GetWorldLot());
             if (!Vector3_IsUnSafe(worldpos))
@@ -1640,6 +1641,33 @@ namespace Veitc.AddsCommandPlus
             return false;
         }
 
+        public static bool FixUpPlumbBobSingletonNull()
+        {
+            if (PlumbBob.sSingleton == null)
+            {
+                try
+                {
+                    GlobalFunctions.CreateObjectOutOfWorld("PlumbBob");
+                }
+                catch (ResetException)
+                {
+                    throw;
+                }
+                catch { }
+
+                if (Simulator.CheckYieldingContext(false))
+                    Simulator.Sleep(0);
+            }
+
+            if (PlumbBob.sSingleton == null)
+            {
+                Comman.PrintMessage("Could not create PlumbBob!", false, 50);
+                return false;
+            }
+
+            return true;
+        }
+
         public static Household FindHouse(bool showno)
         {
             if (!Simulator.CheckYieldingContext(false)) 
@@ -2504,7 +2532,11 @@ namespace Veitc.AddsCommandPlus
 
         public static void RemoveTaskFromSimulator(ref ObjectGuid taskHandle)
         {
+#if TEST_FASTCALL_NATIVE
             ScriptCore.Simulator.Simulator_DestroyObjectImpl(taskHandle.Value);
+#else
+            Simulator.DestroyObject(taskHandle);
+#endif
             taskHandle = new ObjectGuid(0);
         }
 

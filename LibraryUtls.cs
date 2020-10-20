@@ -627,6 +627,14 @@ namespace Veitc.AddsCommandPlus
                             siteem.mHousehold = mhouse;
                         }
 
+                        try
+                        {
+                            mhouse.FixupGenealogy();
+                        }
+                        catch (Exception ex)
+                        {
+                            Comman.PrintException(null, ex);
+                        }
 
                         foreach (SimDescription siteem in mhouse.AllSimDescriptions.ToArray())
                         {
@@ -698,14 +706,7 @@ namespace Veitc.AddsCommandPlus
                             {
                                 Comman.PrintException(null, ex);
                             }
-                            try
-                            {
-                                mhouse.FixupGenealogy();
-                            }
-                            catch (Exception ex)
-                            {
-                                Comman.PrintException(null, ex);
-                            }
+                            //
                         }
                         contents = hoc.Contents;
                         return mhouse;

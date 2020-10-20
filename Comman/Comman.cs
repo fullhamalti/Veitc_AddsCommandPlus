@@ -684,6 +684,7 @@ namespace Veitc.AddsCommandPlus
                 if (createHousehold && deadSimDesc.Household == null)
                 {
                     Household va = Household.Create();
+                    va.Name = deadSimDesc.mLastName ?? "";
                     LibraryUtls.AutoMoveInLotFromHousehold(va);
                     Household_Add(va, deadSimDesc, false);
                 }
@@ -1167,7 +1168,7 @@ namespace Veitc.AddsCommandPlus
             StyledNotification.Format format =
                 (!NoMyModText) ? new StyledNotification.Format
                 //(_thisAssembly._name + "\n" + (Message == "" ? "No Message" : Message ?? "No Message"),
-                    (_thisAssembly._name + "\n" + (string.IsNullOrEmpty(Message) ? "No Message" : Message),
+                    (_thisAssembly._full_name + "\n" + (string.IsNullOrEmpty(Message) ? "No Message" : Message),
                     StyledNotification.NotificationStyle.kGameMessagePositive)
                 : new StyledNotification.Format
                 //((Message == "" ? "No Message" : Message ?? "No Message"),
@@ -1639,6 +1640,31 @@ namespace Veitc.AddsCommandPlus
                 return true;
             }
             return false;
+        }
+
+        public static void FixUpHouseholdListObjects(bool needCreate)
+        {
+            if (Household.sHouseholdList == null)
+            {
+                if (needCreate)
+                    Household.sHouseholdList = new List<Household>();
+                return;
+            }
+
+            while (Household.sHouseholdList.Remove(null)) { }
+
+            foreach (var item in Household.sHouseholdList)
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+                if (item.HasBeenDestroyed)
+                {
+                    item.mbInited = false;
+                    Simulator.AddObject(item);
+                }
+            }
         }
 
         public static bool FixUpPlumbBobSingletonNull()
@@ -2260,8 +2286,57 @@ namespace Veitc.AddsCommandPlus
                     TargetLot = LotManager.sWorldLot;
                 }
             }
-            //    return GetTargetLot() ?? LotManager.ActiveLot ?? LotManager.GetWorldLot();
+            //return GetTargetLot() ?? LotManager.ActiveLot ?? LotManager.GetWorldLot();
             return TargetLot;
+        }
+
+        public static Dictionary<string, int> cacheGetIntPetName = new Dictionary<string, int>();
+        public static int GetMaxValuePetNames(bool male, CASAgeGenderFlags species, bool firstName)
+        {
+            int maxValue;
+
+            string key = "Gameplay/SimNames/Pets/" + species + (firstName ? (male ? "/MaleName:Name" : "/FemaleName:Name") : "/FamilyName:Name");
+
+            if (cacheGetIntPetName.TryGetValue(key ?? "", out maxValue))
+                return maxValue;
+
+            string entryKey = ScriptCore.LocalizedStringService.LocalizedStringService_GetLocalizedStringByString(key ?? "");
+            string valuestr;
+
+            if (entryKey == null || entryKey == "" || !entryKey.Contains("Variation"))
+            {
+                cacheGetIntPetName.Add(key ?? "", -1);
+                return -1;
+            }
+
+            valuestr = entryKey.Replace("{Variation.", "").Replace("}", "");
+            if (valuestr == null || valuestr.Length == 0)
+            {
+                cacheGetIntPetName.Add(key ?? "", -1);
+                return -1;
+            }
+
+            try
+            {
+                maxValue = int.Parse(valuestr ?? "");
+            }
+            catch
+            {
+                maxValue = -1;
+            }
+            
+            cacheGetIntPetName.Add(key, maxValue);
+            return maxValue;
+        }
+
+        public static string GetUnKeyPetNames(bool male, CASAgeGenderFlags species, bool firstName)
+        {
+            int max = GetMaxValuePetNames(male, species, firstName);
+            string key = "Gameplay/SimNames/Pets/" + species + (firstName ? (male ? "/MaleName:Name" : "/FemaleName:Name") : "/FamilyName:Name");
+            if (max == -1)
+                return key;
+
+            return key + "_" + RandomUtil.GetInt(1, max);
         }
 
         public static List<SimDescription> GetAllSimDescription()
@@ -2348,7 +2423,7 @@ namespace Veitc.AddsCommandPlus
 
         public static void SleepTask(uint tickCount)
         {
-            Simulator.CheckYieldingContext(true); // Simulator.CheckYieldingContext();
+            //Simulator.CheckYieldingContext(true); // Simulator.CheckYieldingContext();
             if (tickCount == 0)
             {
                 Simulator.Sleep(0);

@@ -143,6 +143,8 @@ namespace Veitc.AddsCommandPlus
                     return;
             }
 
+            if (item.LotHome == null)
+                return;
 
             Mailbox mailbox = item.LotHome.FindMailbox();
             World.FindGoodLocationParams fglParams = new World.FindGoodLocationParams(mailbox != null ? mailbox.Position : item.LotHome.Position);
@@ -217,6 +219,8 @@ namespace Veitc.AddsCommandPlus
                         continue;
                 }
 
+                if (item.LotHome == null)
+                    continue;
 
                 Mailbox mailbox = item.LotHome.FindMailbox();
                 World.FindGoodLocationParams fglParams = new World.FindGoodLocationParams(mailbox != null ? mailbox.Position : item.LotHome.Position);

@@ -61,7 +61,7 @@ namespace Veitc.AddsCommandPlus
 
             if (global:: Sims3.UI.NotificationManager.Instance == null)
             {
-                SimpleMessageDialog.Show(_thisAssembly._name, text);
+                SimpleMessageDialog.Show(_thisAssembly._full_name, text);
             }
             else Comman.PrintMessage(text, true, 10);
 
@@ -505,6 +505,22 @@ namespace Veitc.AddsCommandPlus
                             mySkill = skillManager.AddElement(skill.Guid);
                             if (mySkill != null)
                                 mySkill.AddPoints(1E+19f);
+                        }
+
+                        if (mySkill is Charisma && !mySkill.ReachedMaxLevel() && mySkill.mNonPersistableData != null)
+                        {
+                            if (mySkill.mNonPersistableData.PointsForNextLevel != null && mySkill.mNonPersistableData.MaxSkillLevel < mySkill.mNonPersistableData.PointsForNextLevel.Length)
+                            {
+                                int nextPointsLevel = mySkill.mNonPersistableData.PointsForNextLevel[mySkill.mNonPersistableData.MaxSkillLevel];
+                                float points = (float)nextPointsLevel - mySkill.SkillPoints;
+                                mySkill.SkillPoints += points;
+                            }
+                            else
+                            {
+                                mySkill.SkillPoints = 15000;
+                            }
+
+                            mySkill.SkillLevel = mySkill.mNonPersistableData.MaxSkillLevel;
                         }
                     }
                 }
@@ -3913,7 +3929,7 @@ namespace Veitc.AddsCommandPlus
                         }
                         var sim = item.mSim;
                         if (sim != null) {
-                            if (!ScriptCore.Objects.Objects_IsValid(sim.ObjectId.mValue) || sim.mSimDescription != item)
+                            if (sim.ObjectId.mValue == 0 || !ScriptCore.Objects.Objects_IsValid(sim.ObjectId.mValue) || sim.mSimDescription != item)
                             {
                                 item.mSim = null;
                                 Comman.GO_ForceDestroy(sim);
